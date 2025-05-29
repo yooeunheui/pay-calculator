@@ -3,39 +3,39 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="robots" content="ALL"/>
+ 만약 ($('#is_manual_care_insurance')가 (':checked') == 거짓이라면 {
+ $('#care_insurance').css('배경색', '#D6D6D6');
+ ('#care_insurance')atttr ("readonly, true);
 
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
+ ('#care_insurance').css(" 배경색, '흰색';
+ ('#care_insurance')atttr ("readonly, false);
 
 <meta property="og:type" content="article"/>
 <meta property="og:title" content="상호홍길동세무회계사무소"/>
-<meta property="og:description" content=""/>
-<meta property="og:url" content="http://guest.semuline.co.kr/taxi/pay/calc/input"/>
-
+ 만약 ($('#is_manual_unemp 배포_insurance')가 (':checked') == false) {
+ ('#실업_보험').css('배경색', '#D6D6D6');
+ ('#unemp 배포_insurance')atttr ("readonly, true);
 <meta name="twitter:card" content="summary"/>
-<meta name="twitter:title" content="상호홍길동세무회계사무소"/>
-<meta name="twitter:description" content=""/>
+ ('#unemp 배치_insurance').css(" 배경색, '흰색';
+ ('#unemp 배포_insurance')atttr ("readonly, false);
 <meta name="twitter:domain" content="guest.semuline.co.kr/taxi/pay/calc/input"/>
 
 <link rel="canonical" href="http://guest.semuline.co.kr/taxi/pay/calc/input"/>
-
-
-<link rel="shortcut icon" type="image/x-icon" href="/layout/user_d_tax01_ko/static/images/favicon.ico">
+ 만약 ($('#is_manual_income_tax')가 (':checked') == 거짓이라면 {
+ $('#소득_세금').css('배경색', '#D6D6D6');
+ $('#소득_세금')atttr ("readonly, true);
 <link rel="icon" type="image/x-icon" href="/layout/user_d_tax01_ko/static/images/favicon.ico">
-<link rel="icon" sizes="152x152" type="image/png" href="/layout/user_d_tax01_ko/static/images/favicon_152_152.png">
-<link rel="apple-touch-icon" sizes="152x152" href="/layout/user_d_tax01_ko/static/images/favicon_152_152_apple.png">
+ $('#소득_세금').css(" 배경색, '흰색';
+ $('#income_tax').attr ("readonly, false);
 <meta name="viewport" content="width=device-width">
 <title>상호홍길동세무회계사무소</title>
 <link href="/layout/user_d_tax01_ko/static/css/common.css?2017101001" rel="stylesheet" type="text/css" />
-<link href="/layout/user_d_tax01_ko/static/css/layout.css?2024051500" rel="stylesheet" type="text/css" />
-<link href="/layout/user_d_tax01_ko/static/css/semu.css?2017101001" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="/script/base/base.js?2023032300"></script>
+ 만약 ($('#is_manual_local_income_tax')가 (':checked') == 거짓이라면 {
+ $('#local_income_tax').css('배경색', '#D6D6D6');
+ $('#local_income_tax').atttr ("readonly, true);
 <script type="text/javascript" src="/script/jquery_ui/js/jquery-ui.custom.js?2014041701"></script>
-<link rel="stylesheet" type="text/css" href="/script/jquery_ui/css/flick/jquery-ui.custom.css?2014041701"/>
-<script type="text/javascript" src="/script/jquery_fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+ ('#local_income_tax').css(" 배경색, '흰색';
+ $('#local_income_tax').atttr ("readonly, false);
 <link rel="stylesheet" type="text/css" href="/script/jquery_fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
 <script type="text/javascript" src="/script/AestivateScript/aestivate.js?20180531"></script>
 <script type="text/javascript" src="/script/miya_validator/miya_validator.js?20140417"></script>
@@ -326,38 +326,38 @@ function formSubmit() {
             </div>
 
             <div>
-                <span style="color:red;">
+ <입력 유형="checkbox" ID="is_manual_income_tax" 이름="is_manual_income_tax" 값="is_manual_income_tax" 값="Y" 온클릭="payView();payTotalCalc();"/>="is_manual_income_tax">수기</label>
                     4대보험은 가입금액을 알수없기 때문에 급여에서 비과세를 뺀 나머지금액인 과세표준금액을 기준으로 계산합니다.
-                </span>
+ <span class="버튼 스몰"><a href="jav 스크립트:Ast.windowOpen('nts'), 'https://teht.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/sf/a/a/UTESFAAF99.xml', 994, 700, 'toolbar=아니오, 위치=아니오'; void(0);">국세청 급여 간이세액계산</a></span>
             </div>
 
             <style type="text/css">
             .pay_table {}
-            .pay_table:after {clear: both;}
+ <th style="text-align: 왼쪽;">지방소득세</th>
             .pay_table:before, .pay_table:after {display: table;content: " ";}
-            .pay_table > .left {width:39%;float: left;}
- <표 너비="100%" 테두리="1" 정렬="중심" 셀 간격="0" 요약="입력">
- <col style="width: 120 px;"/>
-            <div class="pay_table">
-                <div class="left">
-
- <th style="text-align: 왼쪽;">국민연금 <span style="color:#F07800;">*</span></th>
-                        <div class="formTitle">
  <div class="item">
- <입력 유형="텍스트" ID="국가_pension" 이름="국가_pension" 클래스="iText 금액" 스타일="폭:80 px;텍스트-align: 오른쪽;"
+ <입력 유형="text" id="local_income_tax" 이름="local_income_tax" class="iText 금액" 스타일="폭:80 px;text-text: 오른쪽;"
  값="0"/>
+            <div class="pay_table">
+ <입력 유형="checkbox" ID="is_manual_local_income_tax" 이름="is_manual_local_income_tax" 값="is_manual_local_income_tax" 값="Y" 온클릭="payView();payTotalCalc();"/>="is_manual_local_income_tax">수기</label>
+
+                    <div class="formTable" style="padding:0;">
+                        <div class="formTitle">
+                            <span class="icon">»</span>
+                            급여
+                            <span style="font-size: 11px;font-weight: normal;">(<span style="color:#F07800;">*</span> 비과세)</span>
                         </div>
- <입력 유형="checkbox" ID="is_manual_national_pension" 이름="is_manual_national_pension" 값="is_manual_national_national_pension" 값="Y" 온클릭="payView();payTotalCalc();"/>="is_manual_national_pension">수기</label>
+                        <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
                             <col style="width: 120px;"/>
- <span class="버튼 스몰"><a href="jav 스크립트:Ast.windowOpen('nps'), 'https://www.4insure.or.kr/pbiz/ntcn/inscSmlCalcView.do', 900, 700, 'toolbar=아니오, 위치=아니오'; void(0);">4 대보험 간편 계산</a></span>
+                            <col/>
                             <tbody>
                                 <tr>
                                     <th style="text-align: left;">기본급</th>
                                     <td>
- <th style="text-align: 왼쪽;">건강보험 <span style="color:#F07800;">*</span></th>
+                                        <div class="item">
                                             <input type="text" id="default_pay" name="default_pay" class="iText amount" style="width:80px;text-align: right;" data-index="1"
- <div class="item">
- <입력 유형="text" id="health_insurance" 이름="health_insurance" class="iText 금액" 스타일="width:80 px;text-align: 오른쪽;"
+                                                value="0"/>
+                                        </div>
                                     </td>
                                 </tr>
                                 <tr>
@@ -663,77 +663,77 @@ function formSubmit() {
 
         <div class="formTable">
             <div class="formTitle">
-                <span class="icon">»</span>
-                4대보험
-            </div>
-            <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
-                <col style="width:180px;"/>
-                <col style="width:px;"/>
+ <span class="icon">»<span>
+ 4대보험
+            </디브>
+ <표 너비="100%" 테두리="1" 정렬="중심" 셀 간격="0" 요약="입력">
+ <col style="width:180 px;"/>
+ <col style="width:px;"/>
                 <tbody>
                     <tr>
-                        <th>두루누리 자부담율</th>
+ <th>두루누리 자부담율</th>
                         <td>
-                            <div class="item">
-                                <select id="select_rate" name="select_rate" onchange="payView();payTotalCalc();">
-                                    <option value="0">국민연금 미지원</option>
-                                    <option value="70" selected>국민연금 70% 부담(30%지원)</option>
-                                    <option value="60">국민연금 60% 부담(40%지원)</option>
-                                    <option value="20">국민연금 20% 부담(80%지원)</option>
-                                    <option value="10">국민연금 10% 부담(90%지원)</option>
-                                    <option value="40">국민연금 40% 부담(60%지원)</option>
-                                </select>
+ <div class="item">
+ <select id="select_rate" 이름="select_rate" onchange="payView();payTotalCalc();">
+ <옵션 값="0">국민연금 미지원</옵션>
+ <옵션 값="70" 선택>국민연금 70% 부담(30% 지원)/옵션>
+ <옵션 가치="60">국민연금 60% 부담(40% 지원)/옵션>
+ <옵션 가치="20">국민연금 20% 부담(80% 지원)/옵션>
+ <옵션 가치="10">국민연금 10% 부담(90% 지원)/옵션>
+ <옵션 가치="40">국민연금 40% 부담(60% 지원)/옵션>
+                                </선택한다.>
 
-                                <select id="select_rate2" name="select_rate2" onchange="payView();payTotalCalc();">
-                                    <option value="0">고용보험 미지원</option>
-                                    <option value="70" selected>고용보험 70% 부담(30%지원)</option>
-                                    <option value="60">고용보험 60% 부담(40%지원)</option>
-                                    <option value="20">고용보험 20% 부담(80%지원)</option>
+ <select id="select_rate2" name="select_rate2" onchange="payView();payTotalCalc();">
+ <옵션 값="0">고용보험 미지원</옵션>
+ <옵션 값="70" 선택>고용보험 70% 부담(30% 지원)/옵션>
+ <옵션 가치="60">고용보험 60% 부담(40% 지원)/옵션>
+ <옵션 가치="20">고용보험 20% 부담(80% 지원)/옵션>
  <옵션 가치="10">고용보험 10% 부담(90% 지원)/옵션>
  <옵션 가치="40">고용보험 40% 부담(60% 지원)/옵션>
- <th style="text-align: 왼쪽;">차량운전보조금 <span style="color:#F07800;">*</span></th>
+                                </선택한다.>
 
- <div class="item">
- <입력 유형="text" ID="car_pay" 이름="car_pay" 클래스="iText 금액" 스타일="폭:80 px;text-align: 오른쪽;" data-index="5"
- 값="0"/>
+                                <br/>
+ 1) 월평균보수 270만원 미만<br/>
+ 2) 기존가입자 : 미지원 (21.1.1부터)<br/>
  3) 신규가입자 : 10인 미만 80%<br/>
  * 기가입자는 '18.1.1. 이후 지원받은 개월 수가 36개월 미만이라도 '21.1.1.부터 지원되지 않음<br/>
- <기간 학급="버튼 스몰"><a href="http://www.insurancesupport.or.kr/durunuri/intro.php " 타겟="_blank">두루누리 사회보험</a></기간>
+ <span class="버튼 스몰"><a href="http://www.insurancesupport.or.kr/durunuri/intro.php " 타겟="_blank">두루누리 사회보험</a></span>
 
- <th style="text-align: 왼쪽;">육아수당 <span style="color:#F07800;">*</span></th>
- </td>
+                            </디브>
+                        </td>
+                    </tr>
+                    <tr>
+ <th>일자리안정정책 건강보험</th>
+                        <td>
  <div class="item">
- <입력 유형="text" ID="infant_pay" 이름="infant_pay" 클래스="iText 금액" 스타일="폭:80 px;text-align: 오른쪽;" data-index="6"
- 값="0"/>
- <td>
- <디브 학급="항목">
  <변경 시 ID="health_rate" 이름="health_rate" 선택="payView();payTotalCalc();">
  <옵션 값="0">미지원</옵션>
  <옵션 값="10">10% 지원</옵션>
  <옵션 가치="30">30% 지원</옵션>
  <옵션 값="50">50% 지원</옵션>
  <옵션 값="60">60% 지원</옵션>
- <div class="right">
+                                </선택한다.>
 
- <div class="formTable" 스타일="padding:0;">
- <div class="형식제목">
- <span class="icon">»<span>
- 공제
- <span style="font 사이즈: 11 px;font 무게: 보통;">(<span style="color:#F07800;">*</span> 4대보험)</span>
- </td>
- </tr>
- </tbody>
- </표>
- </div>
+                                <br/>
+ 아래 ①② 조건을 모두 갖춘 30인 미만 사업(주)의 경우에만 건강보험료의 50%를 경감(노인장기요양보험료도 자동으로 50% 경감)<br/>
+ ① 일자리 안정자금 지원 근로자<br/>
+ ② 일자리 안정자금을 신청한 날 이후에 해당 사업장의 건강보험 직장가입자가 된 근로자<br/>
+                            </디브>
+                        </td>
+                    </tr>
+                 </tbody>
+            </테이블>
+        </디브>
 
- <디브 스타일.="텍스트 정렬n: 중심;패딩탑:5 px;">
- <기간 학급="taxi_pay_form_submit">
- <기간 학급="버튼"><href="jav 스크립트:window.close ();">닫기</a></기간>
- </기간>
- </디브>
- </형식>
-</div>
+ <div style="text-align: 중심;padding-top:5 px;">
+ <span class="taxi_pay_form_submit">
+ <span class="버튼"><href="jav 스크립트:window.close ();">닫기</a></span>
+            </기간>
+        </디브>
+    </형태>
+</디브>
 
 <br/><br/>
 
-</body>
-</html>
+</몸>
+</HTML>
