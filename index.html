@@ -1,150 +1,739 @@
-<!DOCTYPE html>
-<html lang="ko">
+
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>홍길동세무회계사무소 급여 계산기</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #f4f4f4;
-      margin: 0;
-      padding: 20px;
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="robots" content="ALL"/>
+
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+
+<meta property="og:type" content="article"/>
+<meta property="og:title" content="상호홍길동세무회계사무소"/>
+<meta property="og:description" content=""/>
+<meta property="og:url" content="http://guest.semuline.co.kr/taxi/pay/calc/input"/>
+
+<meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="상호홍길동세무회계사무소"/>
+<meta name="twitter:description" content=""/>
+<meta name="twitter:domain" content="guest.semuline.co.kr/taxi/pay/calc/input"/>
+
+<link rel="canonical" href="http://guest.semuline.co.kr/taxi/pay/calc/input"/>
+
+
+<link rel="shortcut icon" type="image/x-icon" href="/layout/user_d_tax01_ko/static/images/favicon.ico">
+<link rel="icon" type="image/x-icon" href="/layout/user_d_tax01_ko/static/images/favicon.ico">
+<link rel="icon" sizes="152x152" type="image/png" href="/layout/user_d_tax01_ko/static/images/favicon_152_152.png">
+<link rel="apple-touch-icon" sizes="152x152" href="/layout/user_d_tax01_ko/static/images/favicon_152_152_apple.png">
+<meta name="viewport" content="width=device-width">
+<title>상호홍길동세무회계사무소</title>
+<link href="/layout/user_d_tax01_ko/static/css/common.css?2017101001" rel="stylesheet" type="text/css" />
+<link href="/layout/user_d_tax01_ko/static/css/layout.css?2024051500" rel="stylesheet" type="text/css" />
+<link href="/layout/user_d_tax01_ko/static/css/semu.css?2017101001" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/script/base/base.js?2023032300"></script>
+<script type="text/javascript" src="/script/jquery_ui/js/jquery-ui.custom.js?2014041701"></script>
+<link rel="stylesheet" type="text/css" href="/script/jquery_ui/css/flick/jquery-ui.custom.css?2014041701"/>
+<script type="text/javascript" src="/script/jquery_fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
+<link rel="stylesheet" type="text/css" href="/script/jquery_fancybox/jquery.fancybox.css?v=2.1.5" media="screen" />
+<script type="text/javascript" src="/script/AestivateScript/aestivate.js?20180531"></script>
+<script type="text/javascript" src="/script/miya_validator/miya_validator.js?20140417"></script>
+<link rel="stylesheet" type="text/css" href="/script/base/base.css?2017030703"/>
+
+<!--[if lt IE 9]>
+<script src="/layout/user_d_tax01_ko/static/js/html5shiv.js?11"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/app/taxi/skin/user_d/static/css/taxi.css?2017092005"/>
+<script type="text/javascript"> var is_taxi_client_login = "N";</script>
+<script type="text/javascript" src="/app/taxi/skin/user_d/static/js/taxi.js?2023092900"></script>
+<script type="text/javascript" src="/app/taxi/skin/pay.js?2024070300&pay_calc"></script>
+
+<script type="text/javascript">
+/**
+ * 초기화
+ */
+$(function() {
+    //금액 콤마 처리
+    $('.amount').keyup(function(event) { if(event.keyCode > 47 || event.keyCode == 8) this.value = Ast.comma(Ast.removeComma(this.value)); });
+    //금액 선택 처리
+    $('.amount').click(function(event) { $(this).select(); });
+
+    //실지급액
+    $('#real_pay').keyup(function(event) {
+        if((event.keyCode >= 48 && event.keyCode <= 57) ||
+            (event.keyCode >= 96 && event.keyCode <= 105) ||
+            event.keyCode == 8 || //backspace
+            event.keyCode == 46 || //del
+            event.keyCode == 86 || //v
+            event.keyCode == 88 || //x
+            false) {
+            if($('#is_real_pay').val() != 'Y') {
+                $('#is_real_pay').val('Y');
+                payView();
+            }
+        }
+
+        if(event.keyCode > 47 || event.keyCode == 8) payTotalCalc();
+    });
+
+    //기본급
+    $('#default_pay').keyup(function(event) {
+        if((event.keyCode >= 48 && event.keyCode <= 57) ||
+            (event.keyCode >= 96 && event.keyCode <= 105) ||
+            event.keyCode == 8 || //backspace
+            event.keyCode == 46 || //del
+            event.keyCode == 86 || //v
+            event.keyCode == 88 || //x
+            false) {
+            if($('#is_real_pay').val() != 'N') {
+                $('#is_real_pay').val('N');
+                payView();
+            }
+        }
+
+    	if(event.keyCode > 47 || event.keyCode == 8) payTotalCalc();
+    });
+
+    //급여항목
+    $('#bonus_pay').keyup(function(event) { payTotalCalc(); });
+    $('#etc_pay').keyup(function(event) { payTotalCalc(); });
+    $('#meal_pay').keyup(function(event) { payTotalCalc(); });
+    $('#car_pay').keyup(function(event) { payTotalCalc(); });
+    $('#infant_pay').keyup(function(event) { payTotalCalc(); });
+
+    //공제항목
+    $('#national_pension').keyup(function(event) { payTotalCalc(); });
+    $('#health_insurance').keyup(function(event) { payTotalCalc(); });
+    $('#care_insurance').keyup(function(event) { payTotalCalc(); });
+    $('#unemployment_insurance').keyup(function(event) { payTotalCalc(); });
+    $('#income_tax').keyup(function(event) { payTotalCalc(); });
+    $('#local_income_tax').keyup(function(event) { payTotalCalc(); });
+
+    payView();
+
+    payTotalCalc();
+});
+
+/**
+ * 급여관련 화면 처리
+ */
+function payView() {
+    //급여총액
+    $('#gwase_total').css("background-color", '#D6D6D6');
+    $('#gwase_total').attr("readonly", true);
+
+    //급여총액
+    $('#bigwase_total').css("background-color", '#D6D6D6');
+    $('#bigwase_total').attr("readonly", true);
+
+    //급여총액
+    $('#pay_total').css("background-color", '#D6D6D6');
+    $('#pay_total').attr("readonly", true);
+
+    //공제총액
+    $('#deduction_total').css("background-color", '#D6D6D6');
+    $('#deduction_total').attr("readonly", true);
+
+    //국민연금
+    if($('#is_manual_national_pension').is(':checked') == false) {
+        $('#national_pension').css("background-color", '#D6D6D6');
+        $('#national_pension').attr("readonly", true);
+    } else {
+        $('#national_pension').css("background-color", 'white');
+        $('#national_pension').attr("readonly", false);
     }
-    .container {
-      background: white;
-      max-width: 700px;
-      margin: 0 auto;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+
+    //건강보험
+    if($('#is_manual_health_insurance').is(':checked') == false) {
+        $('#health_insurance').css("background-color", '#D6D6D6');
+        $('#health_insurance').attr("readonly", true);
+    } else {
+        $('#health_insurance').css("background-color", 'white');
+        $('#health_insurance').attr("readonly", false);
     }
-    h1, h2 {
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 5px;
-      color: #333;
+
+    //장기요양보험
+    if($('#is_manual_care_insurance').is(':checked') == false) {
+        $('#care_insurance').css("background-color", '#D6D6D6');
+        $('#care_insurance').attr("readonly", true);
+    } else {
+        $('#care_insurance').css("background-color", 'white');
+        $('#care_insurance').attr("readonly", false);
     }
-    .form-section {
-      margin-top: 20px;
+
+    //고용보험
+    if($('#is_manual_unemployment_insurance').is(':checked') == false) {
+        $('#unemployment_insurance').css("background-color", '#D6D6D6');
+        $('#unemployment_insurance').attr("readonly", true);
+    } else {
+        $('#unemployment_insurance').css("background-color", 'white');
+        $('#unemployment_insurance').attr("readonly", false);
     }
-    .form-section label {
-      display: block;
-      margin-bottom: 10px;
-      font-weight: bold;
+
+    //소득세
+    if($('#is_manual_income_tax').is(':checked') == false) {
+        $('#income_tax').css("background-color", '#D6D6D6');
+        $('#income_tax').attr("readonly", true);
+    } else {
+        $('#income_tax').css("background-color", 'white');
+        $('#income_tax').attr("readonly", false);
     }
-    .amount {
-      width: 150px;
-      padding: 5px;
-      text-align: right;
-      border: 1px solid #ccc;
-      border-radius: 5px;
+
+    //지방소득세
+    if($('#is_manual_local_income_tax').is(':checked') == false) {
+        $('#local_income_tax').css("background-color", '#D6D6D6');
+        $('#local_income_tax').attr("readonly", true);
+    } else {
+        $('#local_income_tax').css("background-color", 'white');
+        $('#local_income_tax').attr("readonly", false);
     }
-    .form-section button {
-      background-color: #007ACC;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      font-size: 16px;
-      cursor: pointer;
-      border-radius: 5px;
+
+    //실지급액 관련 처리
+    if($('#is_real_pay').val() == 'Y') {
+        $('.real_pay_view').show();
+    } else {
+        $('.real_pay_view').hide();
     }
-    .form-section button:hover {
-      background-color: #005A9E;
+}
+
+/**
+ * 급여 계산
+ */
+function payTotalCalc() {
+    var family = $('#family').val();
+    var children = $('#children').val();
+
+    //계산
+    var calc = new PayWorkCalc.Earn({});
+    calc.exec({
+        year : "2025",
+        month : "05",
+
+        family : family,
+        children : children,
+
+        national_pension_singo_amount : 0,
+        health_insurance_singo_amount : 0,
+        unemployment_insurance_singo_amount : 0,
+        is_unemployment_insurance : 'Y',
+        is_auto_singo_amount : true, //신고금액 과표 설정여부
+
+        is_real_pay : $('#is_real_pay').val() == 'Y'?true:false,
+
+        real_pay : $('#real_pay').val(),
+        default_pay : $('#default_pay').val(),
+        bonus_pay : $('#bonus_pay').val(),
+        meal_pay : $('#meal_pay').val(),
+        etc_pay : $('#etc_pay').val(),
+        car_pay : $('#car_pay').val(),
+        infant_pay : $('#infant_pay').val(),
+
+        national_pension : $('#national_pension').val(),
+        health_insurance : $('#health_insurance').val(),
+        care_insurance : $('#care_insurance').val(),
+        unemployment_insurance : $('#unemployment_insurance').val(),
+        income_tax : $('#income_tax').val(),
+        local_income_tax : $('#local_income_tax').val(),
+
+        is_manual_national_pension : $('#is_manual_national_pension').is(':checked'),
+        is_manual_health_insurance : $('#is_manual_health_insurance').is(':checked'),
+        is_manual_care_insurance : $('#is_manual_care_insurance').is(':checked'),
+        is_manual_unemployment_insurance : $('#is_manual_unemployment_insurance').is(':checked'),
+        is_manual_income_tax : $('#is_manual_income_tax').is(':checked'),
+        is_manual_local_income_tax : $('#is_manual_local_income_tax').is(':checked'),
+
+        is_national_durunuri : $('#is_national_durunuri').is(':checked'),
+        is_unemployment_durunuri : $('#is_unemployment_durunuri').is(':checked'),
+        select_tax : $("#select_tax").val(),
+        select_rate : $("#select_rate").val(),
+        select_rate2 : $("#select_rate2").val(),
+        health_rate : $("#health_rate").val()
+    });
+
+    //급여 총액
+    $('#gwase_total').val(Ast.comma(Ast.won(calc.getGwaseTotal())));
+    $('#bigwase_total').val(Ast.comma(Ast.won(calc.getBigwaseTotal())));
+    $('#pay_total').val(Ast.comma(Ast.won(calc.getPayTotal())));
+
+    //국민연금 처리
+    if($('#is_manual_national_pension').is(':checked') == false)
+        $('#national_pension').val(Ast.comma(calc.getNationalPension()));
+
+    //건감보험 계산
+    if($('#is_manual_health_insurance').is(':checked') == false)
+        $('#health_insurance').val(Ast.comma(calc.getHealthInsurance()));
+
+    //장기요양보험 계산
+    if($('#is_manual_care_insurance').is(':checked') == false)
+        $('#care_insurance').val(Ast.comma(calc.getCareInsurance()));
+
+    //고용보험
+    if($('#is_manual_unemployment_insurance').is(':checked') == false)
+        $('#unemployment_insurance').val(Ast.comma(calc.getUnemploymentInsurance()));
+
+    //소득세
+    if($('#is_manual_income_tax').is(':checked') == false)
+        $('#income_tax').val(Ast.comma(calc.getIncomeTax()));
+
+    //지방소득세
+    if($('#is_manual_local_income_tax').is(':checked') == false)
+        $('#local_income_tax').val(Ast.comma(calc.getLocalIncomeTax()));
+
+    //공제 총액
+    $('#deduction_total').val(Ast.comma(Ast.won(calc.getDeductionTotal())));
+
+    if($('#is_real_pay').val() == 'Y') {
+        //기본급 처리
+        $('#default_pay').val(Ast.comma(Ast.won(calc.getDefaultPay())));
+    } else {
+        //실지급액 처리
+        $('#real_pay').val(Ast.comma(Ast.won(calc.getRealPay())));
     }
-    .result-section {
-      background: #f9f9f9;
-      padding: 15px;
-      border: 1px solid #ccc;
-      margin-top: 20px;
-      border-radius: 5px;
-    }
-    .result-section p {
-      font-size: 16px;
-      margin: 10px 0;
-    }
-    @media screen and (max-width: 600px) {
-      .amount {
-        width: 100%;
-        box-sizing: border-box;
-      }
-    }
-  </style>
+}
+
+/**
+ * form submit
+ */
+function formSubmit() {
+    return;
+}
+</script>
 </head>
-<body>
-  <div class="container">
-    <h1>» 홍길동세무회계사무소 급여 계산기</h1>
+<body style="background-color: white;">
 
-    <div class="form-section">
-      <h2>급여 입력</h2>
-      <label>기본급 <input type="text" id="defaultPay" class="amount" value="0"></label>
-      <label>상여 <input type="text" id="bonusPay" class="amount" value="0"></label>
-      <label>기타수당 <input type="text" id="etcPay" class="amount" value="0"></label>
-      <label>식대 (비과세, 최대 100,000) <input type="text" id="mealPay" class="amount" value="0"></label>
-    </div>
+<div style="width:98%;margin:0 auto;">
+    <form id="taxi_pay_form" name="taxi_pay_form" method="post" action="./insert_submit" onsubmit="formSubmit(); return false;">
+    <input type="hidden" id="is_real_pay" name="is_real_pay" value="N"/>
 
-    <div class="form-section">
-      <h2>공제 항목</h2>
-      <label>국민연금 <input type="text" id="pension" class="amount" value="0"></label>
-      <label>건강보험 <input type="text" id="health" class="amount" value="0"></label>
-      <label>장기요양보험 <input type="text" id="care" class="amount" value="0"></label>
-      <label>고용보험 <input type="text" id="unemployment" class="amount" value="0"></label>
-    </div>
+        <div class="formTable">
+            <div class="formTitle">
+                <span class="icon">»</span>
+                <span style="font-size: 14px;float:left;">홍길동세무회계사무소 급여계산기</span>
 
-    <div class="form-section">
-      <button onclick="window.print()">PDF/인쇄</button>
-      <button onclick="calculateTax()">계산하기</button>
-    </div>
+                <style type="text/css">
+                .pay_top {list-style: none;padding:0;margin:0;float: right;}
+                .pay_top li {list-style: none;padding:0;margin:0 0 0 4px;float: left;}
+                </style>
+                <ul class="pay_top">
+                    <li>
+                        <input type="checkbox" id="is_national_durunuri" name="is_national_durunuri"                             value="Y" onclick="payView();payTotalCalc()"/><label for="is_national_durunuri">국민연금 두루누리</label>
+                    </li>
+                    <li>
+                        <input type="checkbox" id="is_unemployment_durunuri" name="is_unemployment_durunuri"                             value="Y" onclick="payView();payTotalCalc()"/><label for="is_unemployment_durunuri">고용보험 두루누리</label>
+                    </li>
+                </ul>
+            </div>
 
-    <div class="result-section">
-      <h2>» 계산 결과</h2>
-      <p>총 지급액: <span id="totalPay">0</span> 원</p>
-      <p>공제 총액: <span id="totalDeduction">0</span> 원</p>
-      <p>실수령액: <span id="netPay">0</span> 원</p>
-    </div>
-  </div>
+            <div>
+                <span style="color:red;">
+                    4대보험은 가입금액을 알수없기 때문에 급여에서 비과세를 뺀 나머지금액인 과세표준금액을 기준으로 계산합니다.
+                </span>
+            </div>
 
-  <script>
-    function parseWon(value) {
-      return parseInt((value || "0").replace(/,/g, '')) || 0;
-    }
+            <style type="text/css">
+            .pay_table {}
+            .pay_table:after {clear: both;}
+            .pay_table:before, .pay_table:after {display: table;content: " ";}
+            .pay_table > .left {width:39%;float: left;}
+ <표 너비="100%" 테두리="1" 정렬="중심" 셀 간격="0" 요약="입력">
+ <col style="width: 120 px;"/>
+            <div class="pay_table">
+                <div class="left">
 
-    function calculateTax() {
-      const basic = parseWon(document.getElementById('defaultPay').value);
-      const bonus = parseWon(document.getElementById('bonusPay').value);
-      const meal = Math.min(parseWon(document.getElementById('mealPay').value), 100000); // 비과세 한도 적용
-      const etc = parseWon(document.getElementById('etcPay').value);
+ <th style="text-align: 왼쪽;">국민연금 <span style="color:#F07800;">*</span></th>
+                        <div class="formTitle">
+ <div class="item">
+ <입력 유형="텍스트" ID="국가_pension" 이름="국가_pension" 클래스="iText 금액" 스타일="폭:80 px;텍스트-align: 오른쪽;"
+ 값="0"/>
+                        </div>
+ <입력 유형="checkbox" ID="is_manual_national_pension" 이름="is_manual_national_pension" 값="is_manual_national_national_pension" 값="Y" 온클릭="payView();payTotalCalc();"/>="is_manual_national_pension">수기</label>
+                            <col style="width: 120px;"/>
+ <span class="버튼 스몰"><a href="jav 스크립트:Ast.windowOpen('nps'), 'https://www.4insure.or.kr/pbiz/ntcn/inscSmlCalcView.do', 900, 700, 'toolbar=아니오, 위치=아니오'; void(0);">4 대보험 간편 계산</a></span>
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: left;">기본급</th>
+                                    <td>
+ <th style="text-align: 왼쪽;">건강보험 <span style="color:#F07800;">*</span></th>
+                                            <input type="text" id="default_pay" name="default_pay" class="iText amount" style="width:80px;text-align: right;" data-index="1"
+ <div class="item">
+ <입력 유형="text" id="health_insurance" 이름="health_insurance" class="iText 금액" 스타일="width:80 px;text-align: 오른쪽;"
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">상여</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="bonus_pay" name="bonus_pay" class="iText amount" style="width:80px;text-align: right;" data-index="2"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">기타수당</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="etc_pay" name="etc_pay" class="iText amount" style="width:80px;text-align: right;" data-index="3"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">식대 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="meal_pay" name="meal_pay" class="iText amount" style="width:80px;text-align: right;" data-index="4"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">차량운전보조금 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="car_pay" name="car_pay" class="iText amount" style="width:80px;text-align: right;" data-index="5"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">육아수당 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="infant_pay" name="infant_pay" class="iText amount" style="width:80px;text-align: right;" data-index="6"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
-      const gross = basic + bonus + meal + etc;
-      const taxable = basic + bonus + etc;
+                </div>
+                <div class="right">
 
-      const pension = taxable * 0.045;
-      const health = taxable * 0.0709;
-      const care = health * 0.1281;
-      const unemployment = taxable * 0.009;
+                    <div class="formTable" style="padding:0;">
+                        <div class="formTitle">
+                            <span class="icon">»</span>
+                            공제
+                            <span style="font-size: 11px;font-weight: normal;">(<span style="color:#F07800;">*</span> 4대보험)</span>
+                        </div>
+                        <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                            <col style="width: 120px;"/>
+                            <col/>
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: left;">국민연금 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="national_pension" name="national_pension" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
 
-      let incomeTax = 0;
-      if (taxable <= 1200000) {
-        incomeTax = taxable * 0.06;
-      } else if (taxable <= 4600000) {
-        incomeTax = 1200000 * 0.06 + (taxable - 1200000) * 0.15;
-      } else {
-        incomeTax = 1200000 * 0.06 + (4600000 - 1200000) * 0.15 + (taxable - 4600000) * 0.24;
-      }
+                                            <input type="checkbox" id="is_manual_national_pension" name="is_manual_national_pension"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_national_pension">수기</label>
 
-      const localTax = incomeTax * 0.1;
+                                            <span class="button small"><a href="javascript:Ast.windowOpen('nps', 'https://www.4insure.or.kr/pbiz/ntcn/inscSmlCalcView.do', 900, 700, 'toolbar=no,location=no');void(0);">4대보험 간편 계산</a></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">건강보험 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="health_insurance" name="health_insurance" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
 
-      const totalDeduction = pension + health + care + unemployment + incomeTax + localTax;
-      const netPay = gross - totalDeduction;
+                                            <input type="checkbox" id="is_manual_health_insurance" name="is_manual_health_insurance"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_health_insurance">수기</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">장기요양보험 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="care_insurance" name="care_insurance" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
 
-      document.getElementById('pension').value = pension.toFixed(0);
-      document.getElementById('health').value = health.toFixed(0);
-      document.getElementById('care').value = care.toFixed(0);
-      document.getElementById('unemployment').value = unemployment.toFixed(0);
+                                            <input type="checkbox" id="is_manual_care_insurance" name="is_manual_care_insurance"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_care_insurance">수기</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">고용보험 <span style="color:#F07800;">*</span></th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="unemployment_insurance" name="unemployment_insurance" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
 
-      document.getElementById('totalPay').innerText = gross.toLocaleString();
-      document.getElementById('totalDeduction').innerText = totalDeduction.toFixed(0).toLocaleString();
-      document.getElementById('netPay').innerText = netPay.toFixed(0).toLocaleString();
-    }
-  </script>
+                                            <input type="checkbox" id="is_manual_unemployment_insurance" name="is_manual_unemployment_insurance"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_unemployment_insurance">수기</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">소득세</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="income_tax" name="income_tax" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
+
+                                            <input type="checkbox" id="is_manual_income_tax" name="is_manual_income_tax"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_income_tax">수기</label>
+
+                                            <span class="button small"><a href="javascript:Ast.windowOpen('nts', 'https://teht.hometax.go.kr/websquare/websquare.html?w2xPath=/ui/sf/a/a/UTESFAAF99.xml', 994, 700, 'toolbar=no,location=no');void(0);">국세청 급여 간이세액계산</a></span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">지방소득세</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="local_income_tax" name="local_income_tax" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
+
+                                            <input type="checkbox" id="is_manual_local_income_tax" name="is_manual_local_income_tax"                                                 value="Y" onclick="payView();payTotalCalc();"/><label for="is_manual_local_income_tax">수기</label>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <style type="text/css">
+            .pay_summary {margin:10px 0 0 0;}
+            .pay_summary:after {clear: both;}
+            .pay_summary:before, .pay_summary:after {display: table;content: " ";}
+            .pay_summary > .left {width:39%;float: left;}
+            .pay_summary > .right {width:60%;float: right;}
+            </style>
+            <div class="pay_summary">
+                <div class="left">
+
+                    <div class="formTable">
+                        <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                            <col style="width: 120px;"/>
+                            <col/>
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: left;">과세</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="gwase_total" name="gwase_total" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">비과세</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="bigwase_total" name="bigwase_total" class="iText amount" style="width:80px;text-align: right;"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">지급총액</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="pay_total" name="pay_total" class="iText" style="width:80px;text-align: right;"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="right">
+
+                    <div class="formTable">
+                        <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                            <col style="width: 120px;"/>
+                            <col/>
+                            <tbody>
+                                <tr>
+                                    <th style="text-align: left;">공제총액</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="deduction_total" name="deduction_total" class="iText" style="width:80px;text-align: right;"
+                                                value="0"/>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th style="text-align: left;">차인지급액</th>
+                                    <td>
+                                        <div class="item">
+                                            <input type="text" id="real_pay" name="real_pay" class="iText amount" style="width:80px;text-align: right;" data-index="7"
+                                                value="0"/>
+                                            <span style="color:blue;">실수령액</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <span class="real_pay_view" style="display: none;">
+                            <br/>
+
+                            <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                                <col style="width:"/>
+                                <col style="width:120px"/>
+                                <col style="width:100px"/>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <span style="color: blue;">
+                                                ※ 4대보험및원천세(소득세/지방소득세)를 회사가 부담 합니다.
+                                                <br/>
+                                                ※ 회사부담분만큼 지급총액은 증가됩니다.
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br/>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="formTable">
+            <div class="formTitle">
+                <span class="icon">»</span>
+                세액
+            </div>
+            <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                <col style="width:80px;"/>
+                <col style="width:100px;"/>
+                <col style="width:80px;"/>
+                <col style="width:px;"/>
+                <tbody>
+                    <tr>
+                        <th>소득세율</th>
+                        <td>
+                            <div class="item">
+                                <select id="select_tax" name="select_tax" onchange="payView();payTotalCalc();">
+                                    <option value="80">80%</option>
+                                    <option value="100" selected>100%</option>
+                                    <option value="120">120%</option>
+                                </select>
+                            </div>
+                        </td>
+                        <th>공제대상</th>
+                        <td>
+                            가족의 수(본인,자녀포함)
+                            <select id="family" name="family" onchange="payView();payTotalCalc();">
+                                                                <option value="1">1인</option>
+                                                                <option value="2">2인</option>
+                                                                <option value="3">3인</option>
+                                                                <option value="4">4인</option>
+                                                                <option value="5">5인</option>
+                                                                <option value="6">6인</option>
+                                                                <option value="7">7인</option>
+                                                                <option value="8">8인</option>
+                                                                <option value="9">9인</option>
+                                                                <option value="10">10인</option>
+                                                                <option value="11">11인</option>
+                                                            </select>
+
+                            20세이하 자녀수
+                            <select id="children" name="children" onchange="payView();payTotalCalc();">
+                                                                <option value="0">0인</option>
+                                                                <option value="1">1인</option>
+                                                                <option value="2">2인</option>
+                                                                <option value="3">3인</option>
+                                                                <option value="4">4인</option>
+                                                                <option value="5">5인</option>
+                                                                <option value="6">6인</option>
+                                                                <option value="7">7인</option>
+                                                                <option value="8">8인</option>
+                                                                <option value="9">9인</option>
+                                                                <option value="10">10인</option>
+                                                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="formTable">
+            <div class="formTitle">
+                <span class="icon">»</span>
+                4대보험
+            </div>
+            <table width="100%" border="1" align="center" cellspacing="0" summary="입력">
+                <col style="width:180px;"/>
+                <col style="width:px;"/>
+                <tbody>
+                    <tr>
+                        <th>두루누리 자부담율</th>
+                        <td>
+                            <div class="item">
+                                <select id="select_rate" name="select_rate" onchange="payView();payTotalCalc();">
+                                    <option value="0">국민연금 미지원</option>
+                                    <option value="70" selected>국민연금 70% 부담(30%지원)</option>
+                                    <option value="60">국민연금 60% 부담(40%지원)</option>
+                                    <option value="20">국민연금 20% 부담(80%지원)</option>
+                                    <option value="10">국민연금 10% 부담(90%지원)</option>
+                                    <option value="40">국민연금 40% 부담(60%지원)</option>
+                                </select>
+
+                                <select id="select_rate2" name="select_rate2" onchange="payView();payTotalCalc();">
+                                    <option value="0">고용보험 미지원</option>
+                                    <option value="70" selected>고용보험 70% 부담(30%지원)</option>
+                                    <option value="60">고용보험 60% 부담(40%지원)</option>
+                                    <option value="20">고용보험 20% 부담(80%지원)</option>
+ <옵션 가치="10">고용보험 10% 부담(90% 지원)/옵션>
+ <옵션 가치="40">고용보험 40% 부담(60% 지원)/옵션>
+ <th style="text-align: 왼쪽;">차량운전보조금 <span style="color:#F07800;">*</span></th>
+
+ <div class="item">
+ <입력 유형="text" ID="car_pay" 이름="car_pay" 클래스="iText 금액" 스타일="폭:80 px;text-align: 오른쪽;" data-index="5"
+ 값="0"/>
+ 3) 신규가입자 : 10인 미만 80%<br/>
+ * 기가입자는 '18.1.1. 이후 지원받은 개월 수가 36개월 미만이라도 '21.1.1.부터 지원되지 않음<br/>
+ <기간 학급="버튼 스몰"><a href="http://www.insurancesupport.or.kr/durunuri/intro.php " 타겟="_blank">두루누리 사회보험</a></기간>
+
+ <th style="text-align: 왼쪽;">육아수당 <span style="color:#F07800;">*</span></th>
+ </td>
+ <div class="item">
+ <입력 유형="text" ID="infant_pay" 이름="infant_pay" 클래스="iText 금액" 스타일="폭:80 px;text-align: 오른쪽;" data-index="6"
+ 값="0"/>
+ <td>
+ <디브 학급="항목">
+ <변경 시 ID="health_rate" 이름="health_rate" 선택="payView();payTotalCalc();">
+ <옵션 값="0">미지원</옵션>
+ <옵션 값="10">10% 지원</옵션>
+ <옵션 가치="30">30% 지원</옵션>
+ <옵션 값="50">50% 지원</옵션>
+ <옵션 값="60">60% 지원</옵션>
+ <div class="right">
+
+ <div class="formTable" 스타일="padding:0;">
+ <div class="형식제목">
+ <span class="icon">»<span>
+ 공제
+ <span style="font 사이즈: 11 px;font 무게: 보통;">(<span style="color:#F07800;">*</span> 4대보험)</span>
+ </td>
+ </tr>
+ </tbody>
+ </표>
+ </div>
+
+ <디브 스타일.="텍스트 정렬n: 중심;패딩탑:5 px;">
+ <기간 학급="taxi_pay_form_submit">
+ <기간 학급="버튼"><href="jav 스크립트:window.close ();">닫기</a></기간>
+ </기간>
+ </디브>
+ </형식>
+</div>
+
+<br/><br/>
+
 </body>
 </html>
