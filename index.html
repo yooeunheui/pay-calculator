@@ -1,22 +1,150 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <title>급여 계산기</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <title>홍길동세무회계사무소 급여 계산기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      background: white;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2 {
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 5px;
+      color: #333;
+    }
+    .form-section {
+      margin-top: 20px;
+    }
+    .form-section label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: bold;
+    }
+    .amount {
+      width: 150px;
+      padding: 5px;
+      text-align: right;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .form-section button {
+      background-color: #007ACC;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .form-section button:hover {
+      background-color: #005A9E;
+    }
+    .result-section {
+      background: #f9f9f9;
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin-top: 20px;
+      border-radius: 5px;
+    }
+    .result-section p {
+      font-size: 16px;
+      margin: 10px 0;
+    }
+    @media screen and (max-width: 600px) {
+      .amount {
+        width: 100%;
+        box-sizing: border-box;
+      }
+    }
+  </style>
 </head>
 <body>
-  <h1>급여 계산기</h1>
-  <form>
-    <label>기본급: <input type="text" id="defaultPay" /></label><br />
-    <label>상여: <input type="text" id="bonusPay" /></label><br />
-    <label>식대 (비과세): <input type="text" id="mealPay" /></label><br />
-    <label>기타수당: <input type="text" id="etcPay" /></label><br />
-    <button type="button" onclick="calculateTax()">계산하기</button>
-  </form>
-  <h3>총 지급액: <span id="totalPay">0</span> 원</h3>
-  <h3>공제 총액: <span id="totalDeduction">0</span> 원</h3>
-  <h3>실수령액: <span id="netPay">0</span> 원</h3>
-  <script src="script.js"></script>
+  <div class="container">
+    <h1>» 홍길동세무회계사무소 급여 계산기</h1>
+
+    <div class="form-section">
+      <h2>급여 입력</h2>
+      <label>기본급 <input type="text" id="defaultPay" class="amount" value="0"></label>
+      <label>상여 <input type="text" id="bonusPay" class="amount" value="0"></label>
+      <label>기타수당 <input type="text" id="etcPay" class="amount" value="0"></label>
+      <label>식대 (비과세, 최대 100,000) <input type="text" id="mealPay" class="amount" value="0"></label>
+    </div>
+
+    <div class="form-section">
+      <h2>공제 항목</h2>
+      <label>국민연금 <input type="text" id="pension" class="amount" value="0"></label>
+      <label>건강보험 <input type="text" id="health" class="amount" value="0"></label>
+      <label>장기요양보험 <input type="text" id="care" class="amount" value="0"></label>
+      <label>고용보험 <input type="text" id="unemployment" class="amount" value="0"></label>
+    </div>
+
+    <div class="form-section">
+      <button onclick="window.print()">PDF/인쇄</button>
+      <button onclick="calculateTax()">계산하기</button>
+    </div>
+
+    <div class="result-section">
+      <h2>» 계산 결과</h2>
+      <p>총 지급액: <span id="totalPay">0</span> 원</p>
+      <p>공제 총액: <span id="totalDeduction">0</span> 원</p>
+      <p>실수령액: <span id="netPay">0</span> 원</p>
+    </div>
+  </div>
+
+  <script>
+    function parseWon(value) {
+      return parseInt((value || "0").replace(/,/g, '')) || 0;
+    }
+
+    function calculateTax() {
+      const basic = parseWon(document.getElementById('defaultPay').value);
+      const bonus = parseWon(document.getElementById('bonusPay').value);
+      const meal = Math.min(parseWon(document.getElementById('mealPay').value), 100000); // 비과세 한도 적용
+      const etc = parseWon(document.getElementById('etcPay').value);
+
+      const gross = basic + bonus + meal + etc;
+      const taxable = basic + bonus + etc;
+
+      const pension = taxable * 0.045;
+      const health = taxable * 0.0709;
+      const care = health * 0.1281;
+      const unemployment = taxable * 0.009;
+
+      let incomeTax = 0;
+      if (taxable <= 1200000) {
+        incomeTax = taxable * 0.06;
+      } else if (taxable <= 4600000) {
+        incomeTax = 1200000 * 0.06 + (taxable - 1200000) * 0.15;
+      } else {
+        incomeTax = 1200000 * 0.06 + (4600000 - 1200000) * 0.15 + (taxable - 4600000) * 0.24;
+      }
+
+      const localTax = incomeTax * 0.1;
+
+      const totalDeduction = pension + health + care + unemployment + incomeTax + localTax;
+      const netPay = gross - totalDeduction;
+
+      document.getElementById('pension').value = pension.toFixed(0);
+      document.getElementById('health').value = health.toFixed(0);
+      document.getElementById('care').value = care.toFixed(0);
+      document.getElementById('unemployment').value = unemployment.toFixed(0);
+
+      document.getElementById('totalPay').innerText = gross.toLocaleString();
+      document.getElementById('totalDeduction').innerText = totalDeduction.toFixed(0).toLocaleString();
+      document.getElementById('netPay').innerText = netPay.toFixed(0).toLocaleString();
+    }
+  </script>
 </body>
 </html>
