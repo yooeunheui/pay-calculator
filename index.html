@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>급여 계산기</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>급여 계산기</h1>
+  <form>
+    <label>기본급: <input type="text" id="defaultPay" /></label><br />
+    <label>상여: <input type="text" id="bonusPay" /></label><br />
+    <label>식대 (비과세): <input type="text" id="mealPay" /></label><br />
+    <label>기타수당: <input type="text" id="etcPay" /></label><br />
+    <button type="button" onclick="calculateTax()">계산하기</button>
+  </form>
+  <h3>총 지급액: <span id="totalPay">0</span> 원</h3>
+  <h3>공제 총액: <span id="totalDeduction">0</span> 원</h3>
+  <h3>실수령액: <span id="netPay">0</span> 원</h3>
+  <script src="script.js"></script>
+</body>
+</html>
