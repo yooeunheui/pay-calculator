@@ -1,15 +1,41 @@
-body {
-  font-family: Arial, sans-serif;
-  margin: 20px;
-}
-form label {
-  display: block;
-  margin-bottom: 10px;
-}
-input {
-  width: 120px;
-  text-align: right;
-}
-h3 {
-  margin-top: 20px;
-}
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>홍길동세무회계사무소 급여 계산기</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>» 홍길동세무회계사무소 급여 계산기</h1>
+
+    <div class="form-section">
+      <h2>급여 입력</h2>
+      <label>기본급 <input type="text" id="defaultPay" class="amount"></label>
+      <label>상여 <input type="text" id="bonusPay" class="amount"></label>
+      <label>기타수당 <input type="text" id="etcPay" class="amount"></label>
+      <label>식대 (비과세) <input type="text" id="mealPay" class="amount"></label>
+    </div>
+
+    <div class="form-section">
+      <h2>공제 항목</h2>
+      <label>국민연금 <input type="text" id="pension" class="amount"></label>
+      <label>건강보험 <input type="text" id="health" class="amount"></label>
+    </div>
+
+    <div class="form-section">
+      <button onclick="calculateTax()">계산하기</button>
+    </div>
+
+    <div class="result-section">
+      <h2>» 계산 결과</h2>
+      <p>총 지급액: <span id="totalPay">0</span> 원</p>
+      <p>공제 총액: <span id="totalDeduction">0</span> 원</p>
+      <p>실수령액: <span id="netPay">0</span> 원</p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
